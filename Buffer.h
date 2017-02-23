@@ -158,6 +158,13 @@ public:
 
     //==============================================================================
 
+    void clear ()
+    {
+        for (auto chan : *this)
+            for (auto& samp : chan)
+                samp = 0.0f;
+    }
+
     void fillAllOnes ()
     {
         for (auto chan : *this)
@@ -178,7 +185,6 @@ public:
             }
         }
     }
-    float** getFpp() { return fpp; }
 
 private:
     float** fpp;
