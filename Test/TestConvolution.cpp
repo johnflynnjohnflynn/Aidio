@@ -132,13 +132,13 @@ void Convolution::runTest()
         
         expectWithinAbsoluteError<float> (cmpl[WDL_fft_permute(len, 0)].im,  0.57451, 0.00001); // stores Nyquist in DC.imag !!!
     }
-
-    beginTest ("Fft WDL time"); // WDL is over twice as fast for both 64 and 32768!!!
+/*
+    beginTest ("Fft WDL speed");     // ----  MAKE SURE TO BE IN RELEASE MODE!!!! ---- WDL 2x faster!
 
     {
         Random rand {123456};
 
-        juce::AudioBuffer<float> b {1, 4096}; // complex size i.e. twice size of desired real array
+        juce::AudioBuffer<float> b {1, 32768}; // complex size i.e. twice size of desired real array
         ado::BufferView io {ado::makeBufferView (b)};
 
         io.clear();
@@ -150,18 +150,19 @@ void Convolution::runTest()
         juce::FFT fft {static_cast<int> (log2(io.getNumSamples() / 2)), false}; // avg for 155 ms 1048576
         WDL_fft_init();
 
-        PerformanceCounter pc ("pc", 50, File {});
+        PerformanceCounter pc ("pc", 1, File {});
         for (;;)
         {
             pc.start();
 
-            //fft.performRealOnlyForwardTransform (io.channel(0).getRawArray());  // 32768 ~2.50ms 64 ~2.4us
-            WDL_real_fft (io.channel(0).getRawArray(), io.getNumSamples(), 0);    // 32768 ~1.05ms 64 ~1us
+            //fft.performRealOnlyForwardTransform (io.channel(0).getRawArray());  // 32768 ~550us 64 ~1us
+            WDL_real_fft (io.channel(0).getRawArray(), io.getNumSamples(), 0);    // 32768 ~300us 64 ~0us
 
             pc.stop();
         }
-    }
 
+    } //             ------------ DID YOU TURN BACK TO DEBUG MODE ?!?!?!? --------------
+*/
     /*beginTest ("Convolve");
 
     {
